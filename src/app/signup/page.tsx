@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { axios } from "axios";
 
 export default function SignUp() {
+    
+
   // defining User Value on Signup
     const [user, setUser] = React.useState({
         email: "",

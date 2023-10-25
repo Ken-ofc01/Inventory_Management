@@ -3,41 +3,106 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { toast } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function SignupPage() {
     const router = useRouter();
-    // Creating a user 
+    // Creating a user
     const [user, setUser] = React.useState({
         email: "",
         password: "",
         fullName: "",
     });
 
+    // making a validated user
+    const [updatedUser, setUpdatedUser] = React.useState({
+        updatedEmail: "",
+        updatedPassword: "",
+        updatedFullName: "",
+    });
     const [buttonDisabled, setButtonDisabled] = React.useState(true);
     const [loading, setLoading] = React.useState(false);
 
-    // submit Handler to redirect user to Login pge 
-    const submitHandle = (event:any) =>{
+    // submit Handler to redirect user to Login pge
+    const submitHandle = (event: any) => {
         event.preventDefault();
-    }
+    };
 
     const onSignup = async () => {
-        try {
-            setLoading(true);
-            const response = await axios.post("/api/users/signup", user);
-            console.log("Signup success", response.data);
-            router.push("/login");
-            
-        } catch (error: any) {
-            console.log("Signup failed", error.message);
+        if (updatedUser.updatedFullName!="" && updatedUser.updatedEmail!="" && updatedUser.updatedPassword!="") {
+            toast.error("The form validation failed");
+            console.log(formValidationHandler())
+        } else {
+            try {
+                setLoading(true);
 
-            toast.error(error.message);
-        } finally {
-            
-            setLoading(false);
+                const response = await axios.post("/api/users/signup", user);
+                console.log("Signup success", response.data);
+                toast.success("Signup success");
+                router.push("/login");
+            } catch (error: any) {
+                console.log("Signup failed", error.message);
+
+                toast.error("This didn't work");
+            } finally {
+                setLoading(false);
+            }
         }
     };
+
+    // validating Data
+    function formValidationHandler() {
+        let checks = 0;
+        const re =
+            /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (user.fullName.length <= 0 && user.fullName.length >= 40) {
+            toast.error("Please enter a valid name");
+        } else {
+            setUpdatedUser({
+                ...updatedUser,
+                updatedFullName: user.fullName,
+            });
+            toast.success("The name was Validated");
+            
+        }
+        if (user.email.toLowerCase().match(re)) {
+            toast.success("Email is valid");
+            setUpdatedUser({
+                ...updatedUser,
+                updatedEmail: user.email,
+            });
+            
+        } else {
+            toast.error("The email is not valid");
+        }
+        function checkPassword() {
+            let strength = 0;
+            if (user.password.match(/[a-z]+/)) {
+                strength += 1;
+            }
+            if (user.password.match(/[A-Z]+/)) {
+                strength += 1;
+            }
+            if (user.password.match(/[0-9]+/)) {
+                strength += 1;
+            }
+            if (user.password.match(/[$@#&!]+/)) {
+                strength += 1;
+            }
+            return strength;
+        }
+        if (checkPassword() >= 4) {
+            toast.success("Password is valid");
+            setUpdatedUser({
+                ...updatedUser,
+                updatedPassword: user.password,
+            });
+            checks = +1;
+        } else {
+            toast.error("The password is not valid");
+        }
+        
+    }
 
     useEffect(() => {
         if (
@@ -53,6 +118,7 @@ export default function SignupPage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-black text-white">
+            <Toaster position="top-center" reverseOrder={false} />
             <div className="bg-gray-900 bg-opacity-70 p-8 rounded-lg shadow-md w-96">
                 <h2 className="text-3xl font-semibold mb-6 text-center">
                     Signup
@@ -117,7 +183,8 @@ export default function SignupPage() {
                         type="submit"
                         onClick={onSignup}
                         className="bg-gray-300 text-black rounded-md px-4 py-2 hover:bg-gray-400 transition-colors w-full"
-                    disabled = {buttonDisabled}>
+                        disabled={buttonDisabled}
+                    >
                         Signup
                     </button>
                 </form>

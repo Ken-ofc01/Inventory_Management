@@ -29,20 +29,21 @@ export default function SignupPage() {
     };
 
     const onSignup = async () => {
-        if (updatedUser.updatedFullName!="" && updatedUser.updatedEmail!="" && updatedUser.updatedPassword!="") {
+        if (
+            updatedUser.updatedFullName != "" &&
+            updatedUser.updatedEmail != "" &&
+            updatedUser.updatedPassword != ""
+        ) {
             toast.error("The form validation failed");
-            console.log(formValidationHandler())
         } else {
             try {
                 setLoading(true);
 
                 const response = await axios.post("/api/users/signup", user);
-                console.log("Signup success", response.data);
+
                 toast.success("Signup success");
                 router.push("/login");
             } catch (error: any) {
-                console.log("Signup failed", error.message);
-
                 toast.error("This didn't work");
             } finally {
                 setLoading(false);
@@ -63,7 +64,6 @@ export default function SignupPage() {
                 updatedFullName: user.fullName,
             });
             toast.success("The name was Validated");
-            
         }
         if (user.email.toLowerCase().match(re)) {
             toast.success("Email is valid");
@@ -71,7 +71,6 @@ export default function SignupPage() {
                 ...updatedUser,
                 updatedEmail: user.email,
             });
-            
         } else {
             toast.error("The email is not valid");
         }
@@ -101,7 +100,6 @@ export default function SignupPage() {
         } else {
             toast.error("The password is not valid");
         }
-        
     }
 
     useEffect(() => {

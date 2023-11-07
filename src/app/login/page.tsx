@@ -13,6 +13,15 @@ export default function SignUp() {
         email: "",
         password: "",
     });
+    
+
+    const [buttonDisabled, setButtonDisabled] = React.useState(true);
+    const [loading, setLoading] = React.useState(false);
+
+    useEffect(() => {
+        
+
+    },[user]);
 
     // Sign Up Function
     const onLogin = async () => {};

@@ -1,3 +1,7 @@
+/*
+This is the default frontend of the Sign up Page
+*/
+
 "use client";
 import Link from "next/link";
 import React, { useEffect } from "react";

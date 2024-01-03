@@ -1,3 +1,9 @@
+// This is the model for the database for an instance of User. 
+// The Schema determines what the properties of the user is going to be
+// Future me  Please understand this shit.
+
+
+
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({

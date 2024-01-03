@@ -1,3 +1,12 @@
+/*
+This is the default implementation of connecting the database to this app 
+The function of this is to just connect the whole app to the database so 
+We could just call this function anywhere in the app and connect it to the database
+
+
+
+*/
+
 import mongoose from "mongoose";
 export async function connect(){
     try{

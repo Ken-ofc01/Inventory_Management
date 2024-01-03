@@ -1,3 +1,7 @@
+/*
+I don't know what the fuck this is 
+*/
+
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'

@@ -1,3 +1,9 @@
+/* 
+This is the home page for the app
+
+*/
+
+
 import Image from 'next/image'
 
 export default function Home() {
